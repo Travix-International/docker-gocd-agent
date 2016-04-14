@@ -14,7 +14,7 @@ RUN groupadd -r -g $GROUP_ID $GROUP_NAME \
     && useradd -r -g $GROUP_NAME -u $USER_ID -d /var/go $USER_NAME \
     && mkdir -p /var/lib/go-agent \
     && mkdir -p /var/go \
-    && curl -fSL "https://download.go.cd/binaries/$GO_VERSION/deb/go-agent-$GO_VERSION.deb    " -o go-agent.deb \
+    && curl -fSL "https://download.go.cd/binaries/$GO_VERSION/deb/go-agent-$GO_VERSION.deb" -o go-agent.deb \
     && dpkg -i go-agent.deb \
     && rm -rf go-agent.db \
     && sed -i -e "s/DAEMON=Y/DAEMON=N/" /etc/default/go-agent \
@@ -34,34 +34,8 @@ ENV GO_SERVER=localhost \
     AGENT_HOSTNAME="" \
     DOCKER_GID_ON_HOST=""
 
-# define default command
-CMD groupmod -g ${GROUP_ID} ${GROUP_NAME}; \
-    usermod -g ${GROUP_ID} -u ${USER_ID} ${USER_NAME}; \
-    if [ -n "$DOCKER_GID_ON_HOST" ]; \
-        then groupadd -g $DOCKER_GID_ON_HOST docker && gpasswd -a go docker; \
-    fi; \
-    chown -R ${USER_NAME}:${GROUP_NAME} /var/lib/go-agent /var/go /var/log/go-agent; \
-    sed -i -e "s/GO_SERVER=127.0.0.1/GO_SERVER=${GO_SERVER}/" /etc/default/go-agent; \
-    sed -i -e "s/GO_SERVER_PORT=8153/GO_SERVER_PORT=${GO_SERVER_PORT}/" /etc/default/go-agent; \
-    if [ -n "$AGENT_KEY" ]; \
-        then echo "agent.auto.register.key=$AGENT_KEY" > /var/lib/go-agent/config/autoregister.properties; \
-        if [ -n "$AGENT_RESOURCES" ]; \
-            then echo "agent.auto.register.resources=$AGENT_RESOURCES" >> /var/lib/go-agent/config/autoregister.properties; \
-        fi; \
-        if [ -n "$AGENT_ENVIRONMENTS" ]; \
-            then echo "agent.auto.register.environments=$AGENT_ENVIRONMENTS" >> /var/lib/go-agent/config/autoregister.properties; \
-        fi; \
-        if [ -n "$AGENT_HOSTNAME" ]; \
-            then echo "agent.auto.register.hostname=$AGENT_HOSTNAME" >> /var/lib/go-agent/config/autoregister.properties; \
-        fi; \
-    fi; \
-    until curl -s -o /dev/null "http://${GO_SERVER}:${GO_SERVER_PORT}"; \
-        do sleep 5; \
-        echo "Waiting for http://${GO_SERVER}:${GO_SERVER_PORT}"; \
-    done; \
-    (/bin/su - ${USER_NAME} -c "AGENT_MEM=$AGENT_MEM AGENT_MAX_MEM=$AGENT_MAX_MEM /usr/share/go-agent/agent.sh" &); \
-    while [ ! -f /var/log/go-agent/go-agent-bootstrapper.log ]; \
-        do sleep 1; \
-    done; \
-    ps aux; \
-    /bin/su - ${USER_NAME} -c "exec tail -F /var/log/go-agent/*"
+COPY ./docker-entrypoint.sh /
+
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
