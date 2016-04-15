@@ -18,7 +18,7 @@ fi
 
 if [ -d "/var/go" ];
 then
-  chown -R ${USER_NAME}:${GROUP_NAME} /var/go || echo "No write permissions";;
+  chown -R ${USER_NAME}:${GROUP_NAME} /var/go || echo "No write permissions";
 fi
 
 if [ -d "/var/log/go-agent" ];
