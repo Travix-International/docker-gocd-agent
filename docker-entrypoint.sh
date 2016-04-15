@@ -18,7 +18,7 @@ fi
 
 if [ -d "/var/go" ];
 then
-  chown -R ${USER_NAME}:${GROUP_NAME} /var/go;
+  chown -R ${USER_NAME}:${GROUP_NAME} /var/go || echo "No write permissions";;
 fi
 
 if [ -d "/var/log/go-agent" ];
@@ -28,8 +28,6 @@ fi
 
 if [ -d "/var/go/.ssh" ];
 then
-  chown -R ${USER_NAME}:${GROUP_NAME} /var/go/.ssh || echo "No write permissions for /var/go/.ssh";
-
   # make sure ssh keys mounted from kubernetes secret have correct permissions
   chmod 400 /var/go/.ssh/* || echo "No write permissions for /var/go/.ssh";
 
@@ -39,11 +37,6 @@ then
     do mv "$f" "${f//-/_}" || echo "No write permissions for /var/go/.ssh";
   done;
 
-fi
-
-if [ -d "/var/go/.gcloud" ];
-then
-  chown -R ${USER_NAME}:${GROUP_NAME} /var/go/.gcloud || echo "No write permissions for /var/go/.ssh";
 fi
 
 # update config to point to correct go.cd server hostname and port

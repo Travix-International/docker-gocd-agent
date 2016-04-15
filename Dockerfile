@@ -34,7 +34,6 @@ ENV GO_SERVER=localhost \
     AGENT_HOSTNAME="" \
     DOCKER_GID_ON_HOST=""
 
-# update entrypoint 1
 COPY ./docker-entrypoint.sh /
 
 RUN chmod 500 /docker-entrypoint.sh
