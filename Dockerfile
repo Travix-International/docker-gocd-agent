@@ -3,7 +3,7 @@ FROM travix/base-debian-git-jre8:latest
 MAINTAINER Travix
 
 # build time environment variables
-ENV GO_VERSION=16.3.0-3183 \
+ENV GO_VERSION=16.4.0-3223 \
     USER_NAME=go \
     USER_ID=999 \
     GROUP_NAME=go \
