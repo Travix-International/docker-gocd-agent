@@ -26,7 +26,7 @@ then
   chown -R ${USER_NAME}:${GROUP_NAME} /var/log/go-agent;
 fi
 
-if [ -d "/var/go/.ssh" ];
+if [ -d "/var/go/.ssh" ] && [ find "/var/go/.ssh" -mindepth 1 -print -quit | grep -q . ];
 then
   # make sure ssh keys mounted from kubernetes secret have correct permissions
   chmod 400 /var/go/.ssh/* || echo "No write permissions for /var/go/.ssh";
