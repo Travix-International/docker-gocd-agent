@@ -34,7 +34,7 @@ then
 
   echo "Copying files from /k8s-ssh-secret to /var/go/.ssh"
   mkdir -p /var/go/.ssh
-  cp -r /k8s-ssh-secret/* /var/go/.ssh
+  cp -Lr /k8s-ssh-secret/* /var/go/.ssh
 
 else
   echo "Directory /k8s-ssh-secret does not exist"
