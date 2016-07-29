@@ -25,7 +25,7 @@ RUN groupadd -r -g $GROUP_ID $GROUP_NAME \
 
 # runtime environment variables
 ENV GO_SERVER=localhost \
-    GO_SERVER_PORT=8153 \
+    GO_SERVER_PORT=8154 \
     AGENT_MEM=128m \
     AGENT_MAX_MEM=256m \
     AGENT_KEY="" \

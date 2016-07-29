@@ -70,8 +70,7 @@ else
 fi
 
 # update config to point to correct go.cd server hostname and port
-sed -i -e "s/GO_SERVER=127.0.0.1/GO_SERVER=${GO_SERVER}/" /etc/default/go-agent
-sed -i -e "s/GO_SERVER_PORT=8153/GO_SERVER_PORT=${GO_SERVER_PORT}/" /etc/default/go-agent
+sed -i -e "s|GO_SERVER_URL=https://127.0.0.1:8154/go|GO_SERVER_URL=https://${GO_SERVER}:${GO_SERVER_PORT}/go|" /etc/default/go-agent
 
 # autoregister agent with server
 if [ -n "$AGENT_KEY" ]
