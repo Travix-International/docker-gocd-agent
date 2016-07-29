@@ -14,7 +14,7 @@ RUN groupadd -r -g $GROUP_ID $GROUP_NAME \
     && useradd -r -g $GROUP_NAME -u $USER_ID -d /var/go $USER_NAME \
     && mkdir -p /var/lib/go-agent \
     && mkdir -p /var/go \
-    && curl -fSL "https://download.go.cd/binaries/$GO_VERSION/deb/go-agent-$GO_VERSION.deb" -o go-agent.deb \
+    && curl -fSL "https://download.go.cd/binaries/${GO_VERSION}/deb/go-agent_${GO_VERSION}_all.deb" -o go-agent.deb \
     && dpkg -i go-agent.deb \
     && rm -rf go-agent.db \
     && sed -i -e "s/DAEMON=Y/DAEMON=N/" /etc/default/go-agent \
