@@ -98,8 +98,6 @@ done
 # start agent as go user
 (/bin/su - ${USER_NAME} -c "AGENT_MEM=$AGENT_MEM AGENT_MAX_MEM=$AGENT_MAX_MEM /usr/share/go-agent/agent.sh" &)
 
-java -jar agent-bootstrapper.jar -serverUrl https://ci.example.com:8154/go [-rootCertFile /path/to/root-cert.pem] [-sslVerificationMode FULL|NONE|NO_VERIFY_HOST]
-
 # wait for agent to start logging
 while [ ! -f /var/log/go-agent/go-agent-bootstrapper.log ]
 do
