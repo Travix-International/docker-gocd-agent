@@ -25,6 +25,7 @@ RUN groupadd -r -g $GROUP_ID $GROUP_NAME \
 
 # runtime environment variables
 ENV GO_SERVER_URL=https://localhost:8154/go \
+    AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
     AGENT_MEM=128m \
     AGENT_MAX_MEM=256m \
     AGENT_KEY="" \
