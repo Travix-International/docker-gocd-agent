@@ -69,6 +69,9 @@ else
   echo "Directory /var/go/.ssh does not exist"
 fi
 
+# update config to point to correct go.cd server hostname and port
+sed -i -e "s|GO_SERVER_URL=https://127.0.0.1:8154/go|GO_SERVER_URL=${GO_SERVER_URL}|" /etc/default/go-agent
+
 # autoregister agent with server
 if [ -n "$AGENT_KEY" ]
 then
