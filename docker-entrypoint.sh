@@ -12,6 +12,25 @@ then
   groupadd -g $DOCKER_GID_ON_HOST docker && gpasswd -a go docker
 fi
 
+# autoregister agent with server
+if [ -n "$AGENT_KEY" ]
+then
+  mkdir -p /var/lib/go-agent/config
+  echo "agent.auto.register.key=$AGENT_KEY" > /var/lib/go-agent/config/autoregister.properties
+  if [ -n "$AGENT_RESOURCES" ]
+  then
+    echo "agent.auto.register.resources=$AGENT_RESOURCES" >> /var/lib/go-agent/config/autoregister.properties
+  fi
+  if [ -n "$AGENT_ENVIRONMENTS" ]
+  then
+    echo "agent.auto.register.environments=$AGENT_ENVIRONMENTS" >> /var/lib/go-agent/config/autoregister.properties
+  fi
+  if [ -n "$AGENT_HOSTNAME" ]
+  then
+    echo "agent.auto.register.hostname=$AGENT_HOSTNAME" >> /var/lib/go-agent/config/autoregister.properties
+  fi
+fi
+
 # chown directories that might have been mounted as volume and thus still have root as owner
 if [ -d "/var/lib/go-agent" ]
 then
@@ -71,25 +90,6 @@ fi
 
 # update config to point to correct go.cd server hostname and port
 sed -i -e "s|GO_SERVER_URL=https://127.0.0.1:8154/go|GO_SERVER_URL=${GO_SERVER_URL}|" /etc/default/go-agent
-
-# autoregister agent with server
-if [ -n "$AGENT_KEY" ]
-then
-  mkdir -p /var/lib/go-agent/config
-  echo "agent.auto.register.key=$AGENT_KEY" > /var/lib/go-agent/config/autoregister.properties
-  if [ -n "$AGENT_RESOURCES" ]
-  then
-    echo "agent.auto.register.resources=$AGENT_RESOURCES" >> /var/lib/go-agent/config/autoregister.properties
-  fi
-  if [ -n "$AGENT_ENVIRONMENTS" ]
-  then
-    echo "agent.auto.register.environments=$AGENT_ENVIRONMENTS" >> /var/lib/go-agent/config/autoregister.properties
-  fi
-  if [ -n "$AGENT_HOSTNAME" ]
-  then
-    echo "agent.auto.register.hostname=$AGENT_HOSTNAME" >> /var/lib/go-agent/config/autoregister.properties
-  fi
-fi
 
 # wait for server to be available
 until curl -ksLo /dev/null "${GO_SERVER_URL}"
