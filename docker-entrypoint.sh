@@ -31,6 +31,21 @@ then
   fi
 fi
 
+# log to std out instead of file
+cat >/var/lib/go-agent/log4j.properties <<EOL
+log4j.rootCategory=INFO, ConsoleAppender
+
+log4j.logger.net.sourceforge.cruisecontrol=INFO
+log4j.logger.com.thoughtworks.go=INFO
+log4j.logger.org.springframework.context.support=INFO
+log4j.logger.httpclient.wire=INFO
+
+# console output...
+log4j.appender.ConsoleAppender=org.apache.log4j.RollingFileAppender
+log4j.appender.ConsoleAppender.layout=org.apache.log4j.PatternLayout
+log4j.appender.ConsoleAppender.layout.ConversionPattern=%d{ISO8601} [%-9t] %-5p %-16c{4}:%L %x- %m%n
+EOL
+
 # chown directories that might have been mounted as volume and thus still have root as owner
 if [ -d "/var/lib/go-agent" ]
 then
@@ -99,7 +114,11 @@ do
 done
 
 # start agent as go user
-(/bin/su - ${USER_NAME} -c "GO_SERVER_URL=$GO_SERVER_URL AGENT_BOOTSTRAPPER_ARGS=\"$AGENT_BOOTSTRAPPER_ARGS\" AGENT_MEM=$AGENT_MEM AGENT_MAX_MEM=$AGENT_MAX_MEM /usr/share/go-agent/agent.sh" &)
+/bin/su - ${USER_NAME} -c "GO_SERVER_URL=$GO_SERVER_URL AGENT_BOOTSTRAPPER_ARGS=\"$AGENT_BOOTSTRAPPER_ARGS\" AGENT_MEM=$AGENT_MEM AGENT_MAX_MEM=$AGENT_MAX_MEM /usr/share/go-agent/agent.sh" &
+
+supid=$!
+
+echo "Go.cd agent pid: $supid"
 
 # wait for agent to start logging
 while [ ! -f /var/log/go-agent/go-agent-bootstrapper.log ]
@@ -107,5 +126,5 @@ do
   sleep 1
 done
 
-# tail logs, to be replaced with logs that automatically go to stdout/stderr so go.cd crashing will crash the container
-/bin/su - ${USER_NAME} -c "exec tail -F /var/log/go-agent/*"
+# wait for /bin/su process, so container fails if agent fails
+wait $supid
