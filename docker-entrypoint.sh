@@ -128,3 +128,5 @@ done
 
 # wait for /bin/su process, so container fails if agent fails
 wait $supid
+
+echo "Go.cd agent stopped"
