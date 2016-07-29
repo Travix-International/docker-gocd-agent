@@ -130,3 +130,4 @@ done
 wait $supid
 
 echo "Go.cd agent stopped"
+ps
