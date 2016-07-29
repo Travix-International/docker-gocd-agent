@@ -69,9 +69,6 @@ else
   echo "Directory /var/go/.ssh does not exist"
 fi
 
-# update config to point to correct go.cd server hostname and port
-sed -i -e "s|GO_SERVER_URL=https://127.0.0.1:8154/go|GO_SERVER_URL=${GO_SERVER_URL}|" /etc/default/go-agent
-
 # autoregister agent with server
 if [ -n "$AGENT_KEY" ]
 then
@@ -99,7 +96,7 @@ do
 done
 
 # start agent as go user
-(/bin/su - ${USER_NAME} -c "AGENT_MEM=$AGENT_MEM AGENT_MAX_MEM=$AGENT_MAX_MEM /usr/share/go-agent/agent.sh" &)
+(/bin/su - ${USER_NAME} -c "GO_SERVER_URL=$GO_SERVER_URL AGENT_MEM=$AGENT_MEM AGENT_MAX_MEM=$AGENT_MAX_MEM /usr/share/go-agent/agent.sh" &)
 
 # wait for agent to start logging
 while [ ! -f /var/log/go-agent/go-agent-bootstrapper.log ]
