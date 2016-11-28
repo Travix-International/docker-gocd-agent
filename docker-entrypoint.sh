@@ -104,7 +104,31 @@ else
 fi
 
 # update config to point to correct go.cd server hostname and port
-sed -i -e "s|GO_SERVER_URL=https://127.0.0.1:8154/go|GO_SERVER_URL=${GO_SERVER_URL}|" /etc/default/go-agent
+sed -i "s|GO_SERVER_URL=https://127.0.0.1:8154/go|GO_SERVER_URL=${GO_SERVER_URL}|" /etc/default/go-agent
+
+# Add extra Java options
+run_cmd_options='#RUN_CMD=("$(autoDetectJavaExecutable)"#RUN_CMD=("$(autoDetectJavaExecutable)"'
+if [ "$AGENT_MAX_METASPACE" != "" ]
+then
+  run_cmd_options="${run_cmd_options} \"-XX:MaxMetaspaceSize=${AGENT_MAX_METASPACE}\""
+fi
+
+if [ "$AGENT_MEM" != "" ]
+then
+  run_cmd_options="${run_cmd_options} \"-Xms${AGENT_MEM}\""
+fi
+
+if [ "$AGENT_MAX_MEM" != "" ]
+then
+  run_cmd_options="${run_cmd_options} \"-Xmx${AGENT_MAX_MEM}\""
+fi
+
+if [ "$AGENT_YOUNG_GENERATION_MEM" != "" ]
+then
+  run_cmd_options="${run_cmd_options} \"-Xmn${AGENT_YOUNG_GENERATION_MEM}\""
+fi
+
+sed -i "s${run_cmd_options}#" /usr/share/go-agent/agent.sh
 
 # wait for server to be available
 until curl -ksLo /dev/null "${GO_SERVER_URL}"

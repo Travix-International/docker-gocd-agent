@@ -24,15 +24,17 @@ RUN groupadd -r -g $GROUP_ID $GROUP_NAME \
     && groupmod -g 200 ssh
 
 # runtime environment variables
-ENV GO_SERVER_URL=https://localhost:8154/go \
-    AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
-    AGENT_MEM=128m \
-    AGENT_MAX_MEM=256m \
-    AGENT_KEY="" \
-    AGENT_RESOURCES="" \
+ENV AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
     AGENT_ENVIRONMENTS="" \
     AGENT_HOSTNAME="" \
-    DOCKER_GID_ON_HOST=""
+    AGENT_KEY="" \
+    AGENT_MAX_MEM=256m \
+    AGENT_MAX_METASPACE="" \
+    AGENT_MEM=128m \
+    AGENT_RESOURCES="" \
+    AGENT_YOUNG_GENERATION_MEM="" \
+    DOCKER_GID_ON_HOST="" \
+    GO_SERVER_URL=https://localhost:8154/go
 
 # v16
 COPY ./docker-entrypoint.sh /
