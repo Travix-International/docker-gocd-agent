@@ -100,10 +100,14 @@ fi
 sed -i -e "s|GO_SERVER_URL=https://127.0.0.1:8154/go|GO_SERVER_URL=${GO_SERVER_URL}|" /etc/default/go-agent
 
 # wait for server to be available
-until curl -ksLo /dev/null "${GO_SERVER_URL}"
+serverUrl=${GO_SERVER_URL/https/http}
+serverUrl=${serverUrl/8154/8153}
+
+# wait for server to be available
+until curl -ksLo /dev/null "${serverUrl}"
 do
   sleep 5
-  echo "Waiting for ${GO_SERVER_URL}"
+  echo "Waiting for ${serverUrl}"
 done
 
 # start agent as go user
