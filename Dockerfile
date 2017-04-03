@@ -2,23 +2,19 @@ FROM travix/base-debian-git-jre8:latest
 
 MAINTAINER Travix
 
-# install dependencies
+# install docker (based on https://github.com/docker-library/docker/blob/bf822e2b9b4f755156b825444562c9865f22557f/17.03/Dockerfile)
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        apt-transport-https \
-        ca-certificates \
-        iptables \
-        lxc \
-        make \
-        software-properties-common \
+		ca-certificates \
+		curl \
+		openssl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install docker (based on https://github.com/docker-library/docker/blob/bf822e2b9b4f755156b825444562c9865f22557f/17.03/Dockerfile)
-
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 17.03.0-ce
-ENV DOCKER_SHA256 4a9766d99c6818b2d54dc302db3c9f7b352ad0a80a2dc179ec164a3ba29c2d3e
+ENV DOCKER_VERSION 17.03.1-ce
+ENV DOCKER_SHA256 820d13b5699b5df63f7032c8517a5f118a44e2be548dd03271a86656a544af55
 
 RUN set -x \
   && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
@@ -30,6 +26,17 @@ RUN set -x \
   && docker -v
 
 # install docker-in-docker (based on https://github.com/docker-library/docker/blob/bf822e2b9b4f755156b825444562c9865f22557f/17.03/dind/Dockerfile)
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+		btrfs-progs \
+		e2fsprogs \
+		e2fsprogs-extra \
+		iptables \
+		xfsprogs \
+		xz \        
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN set -x \
@@ -71,5 +78,8 @@ ENV AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
 COPY ./docker-entrypoint.sh /
 
 RUN chmod 500 /docker-entrypoint.sh
+
+VOLUME /var/lib/docker
+EXPOSE 2375
 
 CMD ["/docker-entrypoint.sh"]
