@@ -31,7 +31,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
 		btrfs-progs \
 		e2fsprogs \
-		e2fsprogs-extra \
 		iptables \
 		xfsprogs \
 		xz-utils \        
