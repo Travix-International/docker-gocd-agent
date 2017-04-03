@@ -34,7 +34,7 @@ RUN apt-get update \
 		e2fsprogs-extra \
 		iptables \
 		xfsprogs \
-		xz \        
+		xz-utils \        
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
