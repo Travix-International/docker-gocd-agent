@@ -58,7 +58,7 @@ done
 
 # run dockerd
 echo "Starting docker daemon..."
-dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=overlay &
+dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=$STORAGE_DRIVER &
 
 # run go.cd agent
 echo "Starting go.cd agent..."
