@@ -65,7 +65,7 @@ ENV AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
     AGENT_MEM=128m \
     AGENT_RESOURCES="" \
     GO_SERVER_URL="https://localhost:8154/go" \
-    STORAGE_DRIVER="overlay" \
+    STORAGE_DRIVER="overlay2" \
     HOME="/var/go"
 
 COPY ./docker-entrypoint.sh /
