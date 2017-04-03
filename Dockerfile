@@ -40,7 +40,7 @@ RUN set -x \
 
 ENV DIND_COMMIT 3b5fac462d21ca164b3778647420016315289034
 
-RUN wget "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind" -O /usr/local/bin/dind \
+RUN curl -fSL "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind" -o /usr/local/bin/dind \
   && chmod +x /usr/local/bin/dind
 
 # install go agent
