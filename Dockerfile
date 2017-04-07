@@ -2,19 +2,19 @@ FROM travix/base-debian-git-jre8:latest
 
 MAINTAINER Travix
 
-# install docker (based on https://github.com/docker-library/docker/blob/bf822e2b9b4f755156b825444562c9865f22557f/17.03/Dockerfile)
+# install docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/Dockerfile)
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-		ca-certificates \
-		curl \
-		openssl \
+  		ca-certificates \
+  		curl \
+  		openssl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 17.03.1-ce
-ENV DOCKER_SHA256 820d13b5699b5df63f7032c8517a5f118a44e2be548dd03271a86656a544af55
+ENV DOCKER_VERSION 17.04.0-ce
+ENV DOCKER_SHA256 c52cff62c4368a978b52e3d03819054d87bcd00d15514934ce2e0e09b99dd100
 
 RUN set -x \
   && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
@@ -25,15 +25,15 @@ RUN set -x \
   && rm docker.tgz \
   && docker -v
 
-# install docker-in-docker (based on https://github.com/docker-library/docker/blob/bf822e2b9b4f755156b825444562c9865f22557f/17.03/dind/Dockerfile)
+# install docker-in-docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/dind/Dockerfile)
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-		btrfs-progs \
-		e2fsprogs \
-		iptables \
-		xfsprogs \
-		xz-utils \        
+  		btrfs-progs \
+  		e2fsprogs \
+  		iptables \
+  		xfsprogs \
+  		xz-utils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
