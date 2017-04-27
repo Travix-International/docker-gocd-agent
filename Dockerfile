@@ -51,7 +51,7 @@ RUN curl -fSL "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/ha
 
 # install go agent
 
-ENV GO_VERSION=17.3.0 \
+ENV GO_VERSION=17.4.0-4892 \
     GO_BUILD_VERSION=17.3.0-4704
 
 RUN curl -fSL "https://download.gocd.io/binaries/${GO_BUILD_VERSION}/generic/go-agent-${GO_BUILD_VERSION}.zip" -o /tmp/go-agent.zip \
