@@ -2,7 +2,7 @@ FROM travix/base-debian-git-jre8:latest
 
 MAINTAINER Travix
 
-# install docker (based on https://github.com/docker-library/docker/blob/47d5d4ead8a95871d011b005394c9f2f7af68dab/17.05-rc/Dockerfile)
+# install docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/Dockerfile)
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -13,28 +13,19 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 17.05.0-ce-rc1
-ENV DOCKER_SHA256_x86_64 4561742c2174c01ffd0679621b66d29f8a504240d79aa714f6c58348979d02c6
-ENV DOCKER_SHA256_armel 55da582c59e2f2ccebf74c661290ecdc4d503b53acff1644a85f1c1d60dfd661
+ENV DOCKER_VERSION 17.04.0-ce
+ENV DOCKER_SHA256 c52cff62c4368a978b52e3d03819054d87bcd00d15514934ce2e0e09b99dd100
 
-RUN set -ex; \
-  apkArch="$(apk --print-arch)"; \
-  case "$apkArch" in \
-    x86_64) dockerArch=x86_64 ;; \
-    armhf) dockerArch=armel ;; \
-    *) echo >&2 "error: unknown Docker static binary arch $apkArch"; exit 1 ;; \
-  esac; \
-  curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/${dockerArch}/docker-${DOCKER_VERSION}.tgz" -o docker.tgz; \
-# /bin/sh doesn't support ${!...} :(
-  sha256="DOCKER_SHA256_${dockerArch}"; sha256="$(eval "echo \$${sha256}")"; \
-  echo "${sha256} *docker.tgz" | sha256sum -c -; \
-  tar -xzvf docker.tgz; \
-  mv docker/* /usr/local/bin/; \
-  rmdir docker; \
-  rm docker.tgz; \
-  docker -v
+RUN set -x \
+  && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
+  && echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
+  && tar -xzvf docker.tgz \
+  && mv docker/* /usr/local/bin/ \
+  && rmdir docker \
+  && rm docker.tgz \
+  && docker -v
 
-# install docker-in-docker (based on https://github.com/docker-library/docker/blob/56215ac49d9947e317154fad823410df1201089b/17.05-rc/dind/Dockerfile)
+# install docker-in-docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/dind/Dockerfile)
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
