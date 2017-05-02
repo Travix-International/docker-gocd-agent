@@ -12,10 +12,9 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_BUCKET test.docker.com
 ENV DOCKER_VERSION 17.05.0-ce-rc1
 ENV DOCKER_SHA256_x86_64 4561742c2174c01ffd0679621b66d29f8a504240d79aa714f6c58348979d02c6
-ENV DOCKER_SHA256_armel 55da582c59e2f2ccebf74c661290ecdc4d503b53acff1644a85f1c1d60dfd661
 
 RUN set -x \
     && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
