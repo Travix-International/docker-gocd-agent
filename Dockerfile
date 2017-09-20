@@ -34,7 +34,8 @@ ENV LANG="en_US.utf8" \
     AGENT_RESOURCES="" \
     GO_SERVER_URL="https://localhost:8154/go" \
     STORAGE_DRIVER="overlay2" \
-    HOME="/var/go"
+    HOME="/var/go" \
+    RUN_DOCKER_DAEMON="true"
 
 # copy startup script
 COPY ./docker-entrypoint.sh /
