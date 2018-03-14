@@ -1,6 +1,19 @@
-FROM travix/base-debian-git-jre8:latest
+FROM debian:stretch
 
 MAINTAINER Travix
+
+# install dependencies
+RUN apt-get update \
+    && apt-get install -y \
+        curl \
+        unzip \
+        make \
+        git \
+        openjdk-8-jre-headless \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && git config --global core.preloadindex true \
+    && git config --global gc.auto 256
 
 # install docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/Dockerfile)
 
