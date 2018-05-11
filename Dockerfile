@@ -3,8 +3,8 @@ FROM docker:17.09.1-ce-dind
 MAINTAINER Travix
 
 # build time environment variables
-ENV GO_VERSION=18.3.0 \
-    GO_BUILD_VERSION=18.3.0-6540
+ENV GO_VERSION=18.4.0 \
+    GO_BUILD_VERSION=18.4.0-6640
 
 # install go.cd agent
 RUN apk --update-cache upgrade \
