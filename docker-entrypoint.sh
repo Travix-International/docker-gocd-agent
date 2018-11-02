@@ -59,7 +59,7 @@ done
 # run dockerd
 if [ "${RUN_DOCKER_DAEMON}" == "true" ]; then
   echo "Starting docker daemon..."
-  dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=$STORAGE_DRIVER &
+  dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=$STORAGE_DRIVER --max-concurrent-downloads=10 --registry-mirror=https://mirror.gcr.io &
 fi
 
 # run go.cd agent
