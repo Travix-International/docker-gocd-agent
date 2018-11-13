@@ -1,4 +1,4 @@
-FROM docker:18.06.1-ce-dind
+FROM docker:18.09.0-dind
 
 MAINTAINER Travix
 
