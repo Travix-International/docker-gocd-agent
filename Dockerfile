@@ -2,7 +2,8 @@ FROM debian:jessie
 
 MAINTAINER Travix
 
-RUN apt-get -o Acquire::Check-Valid-Until=false update \
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
+    && apt-get -o Acquire::Check-Valid-Until=false update \
     && apt-get install -y --no-install-recommends \
       openjdk-8-jre-headless \
       git \
