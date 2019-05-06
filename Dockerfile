@@ -1,16 +1,27 @@
-FROM travix/base-debian-git-jre8:latest
+FROM debian:stretch
 
 MAINTAINER Travix
 
-# install docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/Dockerfile)
-
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-  		ca-certificates \
-  		curl \
-  		openssl \
+      openjdk-8-jre-headless \
+      git \
+      curl \
+      unzip \
+      make \
+      # docker
+      ca-certificates \
+      openssl \
+      # dind
+      btrfs-progs \
+      e2fsprogs \
+      iptables \
+      xfsprogs \
+      xz-utils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# install docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/Dockerfile)
 
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 17.04.0-ce
@@ -26,16 +37,6 @@ RUN set -x \
   && docker -v
 
 # install docker-in-docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/dind/Dockerfile)
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-  		btrfs-progs \
-  		e2fsprogs \
-  		iptables \
-  		xfsprogs \
-  		xz-utils \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN set -x \
