@@ -4,7 +4,8 @@ MAINTAINER Travix
 
 RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
     && apt-get -o Acquire::Check-Valid-Until=false update \
-    && apt-get install -y --no-install-recommends \
+    && apt-get install -t jessie-backports -y --no-install-recommends \
+      ca-certificates-java \
       openjdk-8-jre-headless \
       git \
       curl \
