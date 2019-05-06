@@ -1,8 +1,8 @@
-FROM debian:stretch
+FROM debian:jessie
 
 MAINTAINER Travix
 
-RUN apt-get update \
+RUN apt-get -o Acquire::Check-Valid-Until=false update \
     && apt-get install -y --no-install-recommends \
       openjdk-8-jre-headless \
       git \
