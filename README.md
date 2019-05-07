@@ -28,6 +28,7 @@ In order to configure the agent for use in your cluster with other than default 
 | AGENT_RESOURCES    | The resource tags for the agent in case of auto-registration                                                                                           |               |
 | AGENT_ENVIRONMENTS | The environments the agent is assigned to in case of auto-registration                                                                                 |               |
 | AGENT_HOSTNAME     | The hostname used for the agent; normally it's the hosts actual hostname                                                                               |               |
+| DOCKER_MTU_SETTING | The amount in bytes for docker daemon [mtu setting](https://docs.docker.com/v17.09/engine/userguide/networking/default_network/custom-docker0/).       | 1500          |
 
 To connect the agent to your server with other than default ip or hostname
 
