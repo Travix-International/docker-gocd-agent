@@ -2,7 +2,9 @@ FROM debian:jessie
 
 MAINTAINER Travix
 
-RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
+RUN \
+    # https://unix.stackexchange.com/questions/508724/failed-to-fetch-jessie-backports-repository/508728#508728
+    echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
     # https://www.jesusamieiro.com/failed-to-fetch-http-ftp-debian-org-debian-dists-jessie-updates-main-404-not-found/
     && echo "Acquire::Check-Valid-Until false;" | tee -a /etc/apt/apt.conf.d/10-nocheckvalid \
     && apt-get update \
