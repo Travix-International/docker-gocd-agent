@@ -12,6 +12,7 @@ RUN \
       ca-certificates-java \
       openjdk-8-jre-headless \
       git \
+      ssh-client \
       curl \
       unzip \
       make \
@@ -68,7 +69,8 @@ RUN curl -fSL "https://download.gocd.io/binaries/${GO_BUILD_VERSION}/generic/go-
     && rm /tmp/go-agent.zip \
     && mv go-agent-${GO_VERSION} /var/lib/go-agent \
     && mkdir -p /var/log/go-agent /var/go \
-    && sed -i -e "s_root:/root_root:/var/go_" /etc/passwd
+    && sed -i -e "s_root:/root_root:/var/go_" /etc/passwd \
+    && groupmod -g 200 ssh
 
 # runtime environment variables
 ENV AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
