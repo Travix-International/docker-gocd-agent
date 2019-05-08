@@ -1,4 +1,4 @@
-FROM docker:18.09.3-dind
+FROM docker:18.09.6-dind
 
 MAINTAINER Travix
 
@@ -9,6 +9,7 @@ ENV GO_VERSION=19.3.0 \
 # install go.cd agent
 RUN apk --update-cache upgrade \
     && apk add --update-cache \
+      nss \
       openjdk8-jre-base \
       git \
       bash \
