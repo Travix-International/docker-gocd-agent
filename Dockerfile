@@ -1,4 +1,4 @@
-FROM adoptopenjdk:11-jre-hotspot
+FROM adoptopenjdk/openjdk11:x86_64-debian-jre-11.0.4_11
 
 MAINTAINER Travix
 
