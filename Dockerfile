@@ -1,21 +1,13 @@
-FROM debian:jessie
+FROM adoptopenjdk:11-jre-hotspot
 
 MAINTAINER Travix
 
-RUN \
-    # https://unix.stackexchange.com/questions/508724/failed-to-fetch-jessie-backports-repository/508728#508728
-    echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
-    # https://www.jesusamieiro.com/failed-to-fetch-http-ftp-debian-org-debian-dists-jessie-updates-main-404-not-found/
-    && echo "Acquire::Check-Valid-Until false;" | tee -a /etc/apt/apt.conf.d/10-nocheckvalid \
-    && apt-get update \
-    && apt-get install -t jessie-backports -y --no-install-recommends \
-      ca-certificates-java \
-      openjdk-8-jre-headless \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
       git \
-      ssh-client \
-      curl \
-      unzip \
       make \
+      openssh-client \
+      unzip \
       # docker
       ca-certificates \
       openssl \
@@ -49,10 +41,10 @@ RUN set -x \
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN set -x \
-  && groupadd -r dockremap \
-  && useradd -r -g dockremap dockremap \
-  && echo 'dockremap:165536:65536' >> /etc/subuid \
-  && echo 'dockremap:165536:65536' >> /etc/subgid
+  && groupadd -r docker \
+  && useradd -r -g docker docker \
+  && echo 'docker:165536:65536' >> /etc/subuid \
+  && echo 'docker:165536:65536' >> /etc/subgid
 
 ENV DIND_COMMIT 3b5fac462d21ca164b3778647420016315289034
 
@@ -66,19 +58,21 @@ ENV GO_VERSION=19.7.0 \
 
 RUN curl -fSL "https://download.gocd.io/binaries/${GO_BUILD_VERSION}/generic/go-agent-${GO_BUILD_VERSION}.zip" -o /tmp/go-agent.zip \
     && unzip /tmp/go-agent.zip -d / \
-    && rm /tmp/go-agent.zip \
+    && rm -rf /tmp/go-agent.zip go-agent-${GO_VERSION}/wrapper go-agent-${GO_VERSION}/wrapper-config go-agent-${GO_VERSION}/bin \
     && mv go-agent-${GO_VERSION} /var/lib/go-agent \
     && mkdir -p /var/log/go-agent /var/go \
     && sed -i -e "s_root:/root_root:/var/go_" /etc/passwd \
     && groupmod -g 200 ssh
+
+COPY agent-logback-include.xml /var/lib/go-agent/config/
+COPY agent-bootstrapper-logback-include.xml /var/lib/go-agent/config/
+COPY agent-launcher-logback-include.xml /var/lib/go-agent/config/
 
 # runtime environment variables
 ENV AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
     AGENT_ENVIRONMENTS="" \
     AGENT_HOSTNAME="" \
     AGENT_KEY="" \
-    AGENT_MAX_MEM=256m \
-    AGENT_MEM=128m \
     AGENT_RESOURCES="" \
     GO_SERVER_URL="https://localhost:8154/go" \
     STORAGE_DRIVER="overlay2" \
@@ -89,7 +83,6 @@ COPY ./docker-entrypoint.sh /
 
 RUN chmod 500 /docker-entrypoint.sh
 
-VOLUME /var/lib/docker
-EXPOSE 2375
+WORKDIR /var/lib/go-agent/
 
 CMD ["/docker-entrypoint.sh"]
