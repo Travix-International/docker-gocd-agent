@@ -80,7 +80,6 @@ ENV AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
     RUN_DOCKER_DAEMON="true"
 
 COPY ./docker-entrypoint.sh /
-
 RUN chmod 500 /docker-entrypoint.sh
 
 WORKDIR /var/lib/go-agent/
