@@ -84,4 +84,4 @@ RUN chmod 500 /docker-entrypoint.sh
 
 WORKDIR /var/lib/go-agent/
 
-CMD ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
