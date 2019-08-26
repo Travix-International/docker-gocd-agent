@@ -43,5 +43,4 @@ echo "Server at ${serverHealthUrl} is ready"
 
 # run go.cd agent
 echo "Starting go.cd agent..."
-which java
-exec java ${JAVA_OPTS} -jar /var/lib/go-agent/lib/agent-bootstrapper.jar -serverUrl ${serverUrl} ${AGENT_BOOTSTRAPPER_ARGS}
+exec /opt/java/openjdk/bin/java ${JAVA_OPTS} -jar /var/lib/go-agent/lib/agent-bootstrapper.jar -serverUrl ${serverUrl} ${AGENT_BOOTSTRAPPER_ARGS}
