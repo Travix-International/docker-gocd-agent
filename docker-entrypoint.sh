@@ -22,22 +22,22 @@ then
   cat /var/lib/go-agent/config/autoregister.properties
 fi
 
-serverUrl=${GO_SERVER_URL/https/http}
-serverUrl=${serverUrl/8154/8153}
-serverUrl=${serverUrl/\/go/\/go\/api\/v1\/health}
-
-# wait for server to be available
-until curl -ksLo /dev/null "${serverUrl}"
-do
-  sleep 5
-  echo "Waiting for ${serverUrl}"
-done
-
 # run dockerd
 if [ "${RUN_DOCKER_DAEMON}" == "true" ]; then
   echo "Starting docker daemon..."
   dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=$STORAGE_DRIVER --max-concurrent-downloads=10 --registry-mirror=https://mirror.gcr.io &
 fi
+
+serverUrl=${GO_SERVER_URL/https/http}
+serverUrl=${serverUrl/8154/8153}
+serverHealthUrl=${serverUrl/\/go/\/go\/api\/v1\/health}
+
+# wait for server to be available
+until [[ "$(curl -ksLo /dev/null -w ''%{http_code}'' ${serverHealthUrl})" = "200" ]]
+do
+  sleep 5
+  echo "Waiting for ${serverHealthUrl}"
+done
 
 # run go.cd agent
 echo "Starting go.cd agent..."
