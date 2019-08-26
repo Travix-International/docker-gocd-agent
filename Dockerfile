@@ -85,7 +85,6 @@ ENV JAVA_HOME=/opt/java/openjdk \
 RUN apk --update-cache upgrade \
     && apk add --update-cache \
       git \
-      bash \
       curl \
       openssh-client \
       coreutils \
