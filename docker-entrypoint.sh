@@ -24,6 +24,7 @@ fi
 
 serverUrl=${GO_SERVER_URL/https/http}
 serverUrl=${serverUrl/8154/8153}
+serverUrl=${serverUrl/\/go/\/go\/api\/v1\/health}
 
 # wait for server to be available
 until curl -ksLo /dev/null "${serverUrl}"
