@@ -10,46 +10,86 @@ RUN apt-get update \
       unzip \
       # docker
       ca-certificates \
-      openssl \
+      wget \
       # dind
       btrfs-progs \
       e2fsprogs \
       iptables \
+      openssl \
       xfsprogs \
       xz-utils \
+  # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
+      pigz \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/Dockerfile)
+# install docker (based on https://github.com/docker-library/docker/blob/92d278e671f32a9ee4a3c0668e46a41f4a3b74b0/19.03/Dockerfile)
 
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 17.04.0-ce
-ENV DOCKER_SHA256 c52cff62c4368a978b52e3d03819054d87bcd00d15514934ce2e0e09b99dd100
+# set up nsswitch.conf for Go's "netgo" implementation (which Docker explicitly uses)
+# - https://github.com/docker/docker-ce/blob/v17.09.0-ce/components/engine/hack/make.sh#L149
+# - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
+# - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
+# RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
+ENV DOCKER_CHANNEL stable
+ENV DOCKER_VERSION 19.03.1
 ENV DOCKER_MTU_SETTING 1500
+# TODO ENV DOCKER_SHA256
+# https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
+# (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
 
-RUN set -x \
-  && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
-  && echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
-  && tar -xzvf docker.tgz \
-  && mv docker/* /usr/local/bin/ \
-  && rmdir docker \
-  && rm docker.tgz \
-  && docker -v
+RUN set -eux; \
+	\
+	dockerArch='x86_64' ; \
+	\
+	if ! wget -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
+		echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'"; \
+		exit 1; \
+	fi; \
+	\
+	tar --extract \
+		--file docker.tgz \
+		--strip-components 1 \
+		--directory /usr/local/bin/ \
+	; \
+	rm docker.tgz; \
+	\
+	dockerd --version; \
+	docker --version
 
-# install docker-in-docker (based on https://github.com/docker-library/docker/blob/587b66d54a69996fc765c9671eb9bc8740172f2d/17.04/dind/Dockerfile)
+# https://github.com/docker-library/docker/pull/166
+#   dockerd-entrypoint.sh uses DOCKER_TLS_CERTDIR for auto-generating TLS certificates
+#   docker-entrypoint.sh uses DOCKER_TLS_CERTDIR for auto-setting DOCKER_TLS_VERIFY and DOCKER_CERT_PATH
+# (For this to work, at least the "client" subdirectory of this path needs to be shared between the client and server containers via a volume, "docker cp", or other means of data sharing.)
+ENV DOCKER_TLS_CERTDIR=/certs
+# also, ensure the directory pre-exists and has wide enough permissions for "dockerd-entrypoint.sh" to create subdirectories, even when run in "rootless" mode
+RUN mkdir /certs /certs/client && chmod 1777 /certs /certs/client
+# (doing both /certs and /certs/client so that if Docker does a "copy-up" into a volume defined on /certs/client, it will "do the right thing" by default in a way that still works for rootless users)
+
+
+# install docker-in-docker (based on https://github.com/docker-library/docker/blob/92d278e671f32a9ee4a3c0668e46a41f4a3b74b0/19.03/dind/Dockerfile)
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN set -x \
-  && groupadd -r docker \
-  && useradd -r -g docker docker \
-  && echo 'docker:165536:65536' >> /etc/subuid \
-  && echo 'docker:165536:65536' >> /etc/subgid
+	&& addgroup --system dockremap \
+	&& adduser --system dockremap \
+  && adduser dockremap dockremap \
+	&& echo 'dockremap:165536:65536' >> /etc/subuid \
+	&& echo 'dockremap:165536:65536' >> /etc/subgid
 
-ENV DIND_COMMIT 3b5fac462d21ca164b3778647420016315289034
+# https://github.com/docker/docker/tree/master/hack/dind
+ENV DIND_COMMIT 37498f009d8bf25fbb6199e8ccd34bed84f2874b
 
-RUN curl -fSL "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind" -o /usr/local/bin/dind \
-  && chmod +x /usr/local/bin/dind
+RUN set -eux; \
+	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+	chmod +x /usr/local/bin/dind
+
+# COPY dockerd-entrypoint.sh /usr/local/bin/
+
+VOLUME /var/lib/docker
+EXPOSE 2375 2376
+
+RUN mkdir -p /var/lib/docker
 
 # install go agent
 
