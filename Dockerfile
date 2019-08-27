@@ -91,6 +91,7 @@ RUN apk --update-cache upgrade \
       curl \
       openssh-client \
       coreutils \
+      bash \
     && rm /var/cache/apk/* \
     && curl -fSL "https://download.gocd.io/binaries/${GO_BUILD_VERSION}/generic/go-agent-${GO_BUILD_VERSION}.zip" -o /tmp/go-agent.zip \
     && unzip /tmp/go-agent.zip -d / \
