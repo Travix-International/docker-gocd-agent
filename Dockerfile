@@ -79,7 +79,8 @@ RUN set -eux; \
     rm -rf /tmp/openjdk.tar.gz;
 
 ENV JAVA_HOME=/opt/java/openjdk \
-    PATH="/opt/java/openjdk/bin:$PATH"
+    PATH="/opt/java/openjdk/bin:$PATH" \
+    DOCKER_MTU_SETTING=1500
 
 # install go.cd agent
 RUN apk --update-cache upgrade \
