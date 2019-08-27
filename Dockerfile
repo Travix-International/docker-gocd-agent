@@ -115,7 +115,6 @@ ENV AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
     AGENT_KEY="" \
     AGENT_RESOURCES="" \
     GO_SERVER_URL="https://localhost:8154/go" \
-    STORAGE_DRIVER="overlay2" \
     HOME="/var/go" \
     RUN_DOCKER_DAEMON="true"
 
