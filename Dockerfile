@@ -6,6 +6,8 @@ MAINTAINER Travix
 ENV GO_VERSION=19.7.0 \
     GO_BUILD_VERSION=19.7.0-9567
 
+RUN addgroup docker
+
 # adoptopenjdk 11 jre https://github.com/AdoptOpenJDK/openjdk-docker/blob/master/11/jre/alpine/Dockerfile.hotspot.releases.full
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
