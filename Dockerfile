@@ -109,7 +109,6 @@ ENV LANG="en_US.utf8" \
     AGENT_KEY="" \
     AGENT_RESOURCES="" \
     GO_SERVER_URL="https://localhost:8154/go" \
-    STORAGE_DRIVER="overlay2" \
     HOME="/var/go" \
     RUN_DOCKER_DAEMON="true"
 
