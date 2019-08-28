@@ -18,17 +18,14 @@ docker run -d travix/gocd-agent:latest
 
 In order to configure the agent for use in your cluster with other than default settings you can pass in the following environment variables
 
-| Name               | Description                                                                                                                                            | Default value |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
-| GO_SERVER          | The host name or ip address of the server to connect to                                                                                                | localhost     |
-| GO_SERVER_PORT     | The http port of the go server                                                                                                                         | 8153          |
-| AGENT_MEM          | The -Xms value for the java vm                                                                                                                         | 128m          |
-| AGENT_MAX_MEM      | The -Xmx value for the java vm                                                                                                                         | 256m          |
-| AGENT_KEY          | The secret key set on the server for auto-registration of the agent                                                                                    |               |
-| AGENT_RESOURCES    | The resource tags for the agent in case of auto-registration                                                                                           |               |
-| AGENT_ENVIRONMENTS | The environments the agent is assigned to in case of auto-registration                                                                                 |               |
-| AGENT_HOSTNAME     | The hostname used for the agent; normally it's the hosts actual hostname                                                                               |               |
-| DOCKER_MTU_SETTING | The amount in bytes for docker daemon [mtu setting](https://docs.docker.com/v17.09/engine/userguide/networking/default_network/custom-docker0/).       | 1500          |
+| Name               | Description                                                                                                                                            | Default value             |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- |
+| GO_SERVER_URL      | The url to the go server including protocol, port and /go path                                                                                         | https://localhost:8154/go |
+| AGENT_KEY          | The secret key set on the server for auto-registration of the agent                                                                                    |                           |
+| AGENT_RESOURCES    | The resource tags for the agent in case of auto-registration                                                                                           |                           |
+| AGENT_ENVIRONMENTS | The environments the agent is assigned to in case of auto-registration                                                                                 |                           |
+| AGENT_HOSTNAME     | The hostname used for the agent; normally it's the hosts actual hostname                                                                               |                           |
+| DOCKER_MTU_SETTING | The amount in bytes for docker daemon [mtu setting](https://docs.docker.com/v17.09/engine/userguide/networking/default_network/custom-docker0/).       | 1500                      |
 
 To connect the agent to your server with other than default ip or hostname
 
