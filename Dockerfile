@@ -105,13 +105,12 @@ COPY agent-bootstrapper-logback-include.xml /var/lib/go-agent/config/
 COPY agent-launcher-logback-include.xml /var/lib/go-agent/config/
 
 # runtime environment variables
-ENV LANG="en_US.utf8" \
+ENV GO_SERVER_URL="https://localhost:8154/go" \
     AGENT_BOOTSTRAPPER_ARGS="-sslVerificationMode NONE" \
     AGENT_ENVIRONMENTS="" \
     AGENT_HOSTNAME="" \
     AGENT_KEY="" \
     AGENT_RESOURCES="" \
-    GO_SERVER_URL="https://localhost:8154/go" \
     HOME="/var/go" \
     RUN_DOCKER_DAEMON="true"
 
