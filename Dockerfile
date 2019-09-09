@@ -93,8 +93,8 @@ RUN mkdir -p /var/lib/docker
 
 # install go agent
 
-ENV GO_VERSION=19.7.0 \
-    GO_BUILD_VERSION=19.7.0-9567
+ENV GO_VERSION=19.8.0 \
+    GO_BUILD_VERSION=19.8.0-9915
 
 RUN curl -fSL "https://download.gocd.io/binaries/${GO_BUILD_VERSION}/generic/go-agent-${GO_BUILD_VERSION}.zip" -o /tmp/go-agent.zip \
     && unzip /tmp/go-agent.zip -d / \
