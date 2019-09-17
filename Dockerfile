@@ -32,7 +32,7 @@ RUN apt-get update \
 # RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 ENV DOCKER_CHANNEL stable
-ENV DOCKER_VERSION 19.03.1
+ENV DOCKER_VERSION 19.03.2
 ENV DOCKER_MTU_SETTING 1500
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
