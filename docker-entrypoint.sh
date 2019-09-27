@@ -26,6 +26,12 @@ fi
 if [ "${RUN_DOCKER_DAEMON}" = "true" ]; then
   echo "Starting docker daemon..."
   dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --mtu=$DOCKER_MTU_SETTING &
+
+  # wait for docker daemon to be ready before continuing
+  while [ ! -f /var/run/docker.sock ]
+  do
+    sleep 1
+  done
 fi
 
 serverUrl=$(echo $GO_SERVER_URL | sed -e "s/https/http/g")
