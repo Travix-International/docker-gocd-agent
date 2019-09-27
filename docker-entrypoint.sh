@@ -29,7 +29,7 @@ if [ "${RUN_DOCKER_DAEMON}" = "true" ]; then
 
   # wait for docker daemon to be ready before continuing
   echo "Checking if docker daemon is ready..."
-  while [ ! -f /var/run/docker.sock ]
+  while ( ! docker stats --no-stream )
   do
     sleep 1
     echo "Waiting for docker daemon to be ready..."
