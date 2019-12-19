@@ -18,6 +18,7 @@ then
   then
     echo "agent.auto.register.hostname=$AGENT_HOSTNAME" >> /var/lib/go-agent/config/autoregister.properties
   fi
+
   echo "/var/lib/go-agent/config/autoregister.properties:"
   cat /var/lib/go-agent/config/autoregister.properties
 fi
