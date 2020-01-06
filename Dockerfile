@@ -25,7 +25,7 @@ RUN set -eux; \
 	\
     dockerArch='x86_64' ; \
 	\
-	if ! wget -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
+	if ! wget -q -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
 		echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'"; \
 		exit 1; \
 	fi; \
@@ -59,12 +59,10 @@ RUN set -eux; \
     && apt-get install -y --no-install-recommends \
 		btrfs-progs \
 		e2fsprogs \
-		e2fsprogs-extra \
 		iptables \
 		openssl \
-		shadow-uidmap \
 		xfsprogs \
-		xz \
+		xz-utils \
 # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
 		pigz \
     && apt-get clean \
@@ -97,8 +95,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
 		git \
         unzip \
-        # https://forums.docker.com/t/failing-to-start-dockerd-failed-to-create-nat-chain-docker/78269
-        iptables \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
