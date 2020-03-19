@@ -12,6 +12,11 @@ RUN apt-get update \
 		openssh-client \
         wget \
         kmod \
+		curl \
+		libcom-err2 \
+		libcurl4 \
+		libidn2-0 \
+		libss2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
