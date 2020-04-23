@@ -3,8 +3,8 @@ FROM docker:19.03.2-dind
 MAINTAINER Travix
 
 # build time environment variables
-ENV GO_VERSION=20.2.0 \
-    GO_BUILD_VERSION=20.2.0-11344
+ENV GO_VERSION=20.3.0 \
+    GO_BUILD_VERSION=20.3.0-11530
 
 RUN addgroup docker
 
