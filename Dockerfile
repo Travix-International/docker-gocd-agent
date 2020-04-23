@@ -17,6 +17,7 @@ RUN apt-get update \
 		libcurl4 \
 		libidn2-0 \
 		libss2 \
+		libssl1.1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
