@@ -18,6 +18,8 @@ RUN apt-get update \
 		libidn2-0 \
 		libss2 \
 		libssl1.1 \
+    libldap-2.4-2 \
+    libldap-common \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
