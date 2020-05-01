@@ -99,7 +99,7 @@ RUN apk --update-cache upgrade \
     && mv go-agent-${GO_VERSION} /var/lib/go-agent \
     && mkdir -p /var/log/go-agent /var/go \
     && sed -i -e "s_root:/root_root:/var/go_" /etc/passwd \
-    && docker version
+    && docker version || true
 
 COPY agent-logback-include.xml /var/lib/go-agent/config/
 COPY agent-bootstrapper-logback-include.xml /var/lib/go-agent/config/
