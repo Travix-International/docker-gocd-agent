@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:jre-11.0.7_10-debian
+FROM adoptopenjdk/openjdk11:jre-11.0.9_11-debian
 
 MAINTAINER Travix
 
