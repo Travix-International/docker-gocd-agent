@@ -96,8 +96,8 @@ EXPOSE 2375 2376
 
 # INSTALL GO.CD AGENT
 
-ENV GO_VERSION=20.9.0 \
-    GO_BUILD_VERSION=20.9.0-12335
+ENV GO_VERSION=20.10.0 \
+    GO_BUILD_VERSION=20.10.0-12356
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
