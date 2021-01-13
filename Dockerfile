@@ -7,19 +7,21 @@ MAINTAINER Travix
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-		ca-certificates \
+	  	ca-certificates \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
-		openssh-client \
-        wget \
-        kmod \
-		curl \
-		libcom-err2 \
-		libcurl4 \
-		libidn2-0 \
-		libss2 \
-		libssl1.1 \
-    libldap-2.4-2 \
-    libldap-common \
+		  openssh-client \
+      wget \
+      kmod \
+      curl \
+      libcom-err2 \
+      libcurl4 \
+      libidn2-0 \
+      libss2 \
+      libssl1.1 \
+      libldap-2.4-2 \
+      libldap-common \
+      # fix vulnerability
+      libp11-kit0 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
