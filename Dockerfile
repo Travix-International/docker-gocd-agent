@@ -98,8 +98,8 @@ EXPOSE 2375 2376
 
 # INSTALL GO.CD AGENT
 
-ENV GO_VERSION=21.1.0 \
-    GO_BUILD_VERSION=21.1.0-12439
+ENV GO_VERSION=21.2.0 \
+    GO_BUILD_VERSION=21.2.0-12498
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
