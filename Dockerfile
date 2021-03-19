@@ -22,6 +22,7 @@ RUN apt-get update \
       libldap-common \
       # fix vulnerability
       libp11-kit0 \
+      libzstd1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
