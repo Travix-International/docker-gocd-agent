@@ -1,6 +1,4 @@
-FROM adoptopenjdk/openjdk11:jre-11.0.9.1_1-debian
-
-MAINTAINER Travix
+FROM adoptopenjdk/openjdk15:debian-jre
 
 # INSTALL DOCKER
 # BASED ON https://github.com/docker-library/docker/blob/a4b5e1b043432fc16fbe983a4bb2e1a004db2aca/19.03/Dockerfile
