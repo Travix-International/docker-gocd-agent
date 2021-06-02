@@ -9,27 +9,11 @@ pipelines:
   bake:
     image: extensions/docker:stable
     action: build
-    no-cache: true
+    severity: unknown
     expand-variables: false
     container: ${ESTAFETTE_LABEL_CONTAINER}
     repositories:
     - travix
-
-  check-container:
-    parallelStages:
-      check-efficiency:
-        image: extensions/docker:stable
-        action: dive
-        container: ${ESTAFETTE_LABEL_CONTAINER}
-        repositories:
-        - travix
-
-      vulnerability-scan:
-        image: extensions/docker:stable
-        action: trivy
-        container: ${ESTAFETTE_LABEL_CONTAINER}
-        repositories:
-        - travix
 
   push-to-docker-hub-branch:
     image: extensions/docker:stable
