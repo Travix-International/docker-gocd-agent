@@ -1,11 +1,5 @@
 FROM docker:20.10.6-dind
 
-MAINTAINER Travix
-
-# build time environment variables
-ENV GO_VERSION=21.2.0 \
-    GO_BUILD_VERSION=21.2.0-12498
-
 RUN addgroup docker
 
 # adoptopenjdk 15 jre https://github.com/AdoptOpenJDK/openjdk-docker/blob/master/15/jre/alpine/Dockerfile.hotspot.releases.full
@@ -88,6 +82,17 @@ RUN set -eux; \
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH" \
     DOCKER_MTU_SETTING=1500
+
+# fix vulnerabilities
+RUN apk update \
+    && apk add --upgrade \
+      curl \
+      libcurl \
+    && rm /var/cache/apk/*
+
+# build time environment variables
+ENV GO_VERSION=21.2.0 \
+    GO_BUILD_VERSION=21.2.0-12498
 
 # install go.cd agent
 RUN apk --update-cache upgrade \
