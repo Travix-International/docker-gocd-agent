@@ -9,7 +9,7 @@ pipelines:
   bake:
     image: extensions/docker:stable
     action: build
-    severity: unknown
+    severity: high
     expand-variables: false
     container: ${ESTAFETTE_LABEL_CONTAINER}
     repositories:
