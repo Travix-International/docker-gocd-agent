@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk15:debian-jre
+FROM adoptopenjdk/openjdk15:jre-15.0.2_7-debian
 
 # INSTALL DOCKER
 # BASED ON https://github.com/docker-library/docker/blob/a4b5e1b043432fc16fbe983a4bb2e1a004db2aca/19.03/Dockerfile
