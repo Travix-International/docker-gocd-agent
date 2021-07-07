@@ -35,6 +35,9 @@ if [ "${RUN_DOCKER_DAEMON}" = "true" ]; then
     echo "Waiting for docker daemon to be ready..."
   done
   echo "Docker daemon is ready"
+
+  echo "> docker info"
+  docker info
 fi
 
 serverHealthUrl=$(echo $GO_SERVER_URL | sed -e "s/\/go/\/go\/api\/v1\/health/g")
